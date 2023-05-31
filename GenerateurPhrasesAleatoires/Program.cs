@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Security.Cryptography;
 
 namespace generateur_phrases_aleatoire // Note: actual namespace depends on the project name.
@@ -68,16 +69,37 @@ namespace generateur_phrases_aleatoire // Note: actual namespace depends on the 
             // sujet = verbe + complément
             // boucle pour NB_PHRASES de fois.
 
-            const int NB_PHRASES = 10;
+            const int NB_PHRASES = 100; 
+            List<string> listePhrases = new List<string>();
+            int compteurDoublons = 0;
             for (int i = 0; i < NB_PHRASES; i++)
             {
                 var sujet = ObtenirElementAleatoire(sujets);
                 var verbe = ObtenirElementAleatoire(verbes);
                 var complement = ObtenirElementAleatoire(complements);
 
-                Console.WriteLine(sujet + " " + verbe + " " + complement);
+                var phrase = sujet + " " + verbe + " " + complement;
+
+                phrase = phrase.Replace("à le", "au");
+ 
+                if(listePhrases.Contains(phrase))
+                {
+                    compteurDoublons++;
+                    i--;
+                }
+                else
+                {
+                    listePhrases.Add(phrase);
+                }
+               
+            }
+            foreach (var item in listePhrases)
+            {
+                Console.WriteLine(item); 
             }
             
+            Console.WriteLine("Nombre de phrases uniques : " + listePhrases.Count);
+            Console.WriteLine("Il y a eu : " + compteurDoublons + " doublons.");
         }
     }
 }
